@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: notification-service
+
+  activemq:
+    broker-url: tcp://localhost:61616
+    user: admin
+    password: admin
+
+logging:
+  level:
+    com.example.notification: INFO

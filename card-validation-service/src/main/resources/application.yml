@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: card-validation-service
+
+  activemq:
+    broker-url: tcp://localhost:61616
+    user: admin
+    password: admin
