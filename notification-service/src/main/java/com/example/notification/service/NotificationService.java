@@ -17,7 +17,8 @@ public class NotificationService {
     }
 
     public void notifyFailure(PaymentMessage msg) {
-        logger.warn("❌ Payment failed [{}] for client {} and merchant {}: reason status={}",
-                msg.getPaymentId(), msg.getClientId(), msg.getMerchantId(), msg.getStatus());
+        logger.warn("❌ Payment failed [{}] for client {} merchant {}: reason={} status={}",
+                msg.getPaymentId(), msg.getClientId(), msg.getMerchantId(),
+                msg.getErrorReason(), msg.getStatus());
     }
 }

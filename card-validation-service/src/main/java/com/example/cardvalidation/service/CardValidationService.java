@@ -19,7 +19,6 @@ public class CardValidationService {
     public void validate(PaymentMessage msg) {
         boolean validFormat = msg.getCardNumber() != null
                 && msg.getCardNumber().matches("\\d{4}-\\d{4}-\\d{4}-\\d{4}");
-
         boolean notExpired = false;
         try {
             YearMonth expiry = YearMonth.parse(msg.getExpiryDate(), DateTimeFormatter.ofPattern("MM/yy"));
@@ -28,12 +27,19 @@ public class CardValidationService {
             notExpired = false;
         }
 
-        if (validFormat && notExpired) {
+        if (!validFormat) {
+            msg.setStatus("FAILED");
+            msg.setErrorReason("Invalid card format");
+            jmsTemplate.convertAndSend("payment.failed", msg);
+        }
+        else if (!notExpired) {
+            msg.setStatus("FAILED");
+            msg.setErrorReason("Card expired on " + msg.getExpiryDate());
+            jmsTemplate.convertAndSend("payment.failed", msg);
+        }
+        else {
             msg.setStatus("CARD_VALID");
             jmsTemplate.convertAndSend("card.validated", msg);
-        } else {
-            msg.setStatus("FAILED");
-            jmsTemplate.convertAndSend("payment.failed", msg);
         }
     }
 }

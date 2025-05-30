@@ -26,3 +26,12 @@ spring:
     hibernate:
       ddl-auto: none   # on initialise via schema.sql
     show-sql: true
+
+logging:
+  level:
+    root: INFO
+    org.hibernate.SQL: DEBUG
+    org.springframework.jms.listener: DEBUG
+    org.springframework.jms.core: DEBUG
+    org.apache.activemq: DEBUG
+    com.example.clientbank: DEBUG

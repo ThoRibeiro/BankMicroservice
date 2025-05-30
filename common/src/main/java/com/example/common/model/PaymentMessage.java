@@ -11,6 +11,7 @@ public class PaymentMessage implements Serializable {
     private String clientId;
     private String merchantId;
     private String status;
+    private String errorReason;
 
     // getters & setters
 
@@ -37,4 +38,7 @@ public class PaymentMessage implements Serializable {
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+
+    public String getErrorReason() { return errorReason; }
+    public void setErrorReason(String errorReason) { this.errorReason = errorReason; }
 }

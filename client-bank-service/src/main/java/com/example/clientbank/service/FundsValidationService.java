@@ -21,15 +21,21 @@ public class FundsValidationService {
 
     public void process(PaymentMessage msg) {
         Optional<Client> clientOpt = clientRepo.findById(msg.getClientId());
-        boolean ok = clientOpt.map(c -> c.getBalance() >= msg.getAmount())
-                .orElse(false);
+        if (clientOpt.isEmpty()) {
+            msg.setStatus("FAILED");
+            msg.setErrorReason("Unknown clientId: " + msg.getClientId());
+            jmsTemplate.convertAndSend("payment.failed", msg);
+            return;
+        }
 
-        if (ok) {
+        Client client = clientOpt.get();
+        if (client.getBalance() < msg.getAmount()) {
+            msg.setStatus("FAILED");
+            msg.setErrorReason("Insufficient funds: balance=" + client.getBalance());
+            jmsTemplate.convertAndSend("payment.failed", msg);
+        } else {
             msg.setStatus("FUNDS_VALID");
             jmsTemplate.convertAndSend("funds.validated", msg);
-        } else {
-            msg.setStatus("FAILED");
-            jmsTemplate.convertAndSend("payment.failed", msg);
         }
     }
 }

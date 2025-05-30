@@ -1,3 +1,6 @@
+server:
+  port: 8080
+
 spring:
   application:
     name: gateway-service
@@ -5,5 +8,10 @@ spring:
     broker-url: tcp://localhost:61616
     user: admin
     password: admin
-server:
-  port: 8080
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+    org.springframework.jms: DEBUG
+    org.apache.activemq: DEBUG
